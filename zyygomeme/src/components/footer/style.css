@@ -1,13 +1,28 @@
 footer {
   background: #181818;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
   align-items: center;
   padding: 20px;
   justify-content: center;
+  position: fixed;
+  bottom: 0;
 }
 
 span {
   color: greenyellow;
+}
+
+@media (max-width: 425px) {
+  footer {
+    font-size: 5px;
+  }
+}
+
+@media (max-width: 768px) {
+  footer {
+    font-size: 8px;
+  }
 }

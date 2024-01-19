@@ -1,16 +1,30 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./style.css";
-const MemeCard = () => {
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [memeUrl, setMemeUrl] = useState("");
+import PlaceholderPara from "../placeholderPara/PlaceholderPara";
 
-  const generateRandomMeme = async () => {
+const MemeCard = () => {
+  const [joke, setJoke] = useState("");
+  const [loading, setLoading] = useState(false);
+  const generateRandomJoke = async () => {
+    setLoading(true);
     try {
-      const response = await axios.get("/api/random-meme");
-      setMemeUrl(response.data.meme);
+      const response = await axios.get("https://api.api-ninjas.com/v1/jokes", {
+        headers: {
+          "X-Api-Key": "jSD+tp99SKPs8+Ix+qmWrw==cpP7CBFpWSm0L0BF",
+        },
+      });
+
+      const randomJoke =
+        response.data && response.data.length > 0
+          ? response.data[Math.floor(Math.random() * response.data.length)]
+          : null;
+      setJoke(randomJoke ? randomJoke.joke : "No Jokes Found!");
     } catch (error) {
-      console.error("Error fetching meme:", error.message);
+      console.error("Error fetching random joke:", error.message);
+      setJoke("Error fetching joke. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -18,29 +32,15 @@ const MemeCard = () => {
     <>
       <div className="card-wrapper">
         <div className="card">
-          <div className="meme-genres">
-            <label htmlFor="genres">Select your meme category</label>
-            <select
-              name="genres"
-              id="genres"
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-            >
-              <option value="">Select...</option>
-              <option value="clean">Clean</option>
-              <option value="animal">Animal</option>
-              <option value="fruit">Fruit</option>
-              <option value="sport">Sport</option>
-              <option value="nerdy">Nerdy</option>
-              <option value="deep_thoughts">Deep Thoughts</option>
-              <option value="relationship">Relationship</option>
-            </select>
-          </div>
-          <div className="meme-wrapper">
-            <div className="meme-container">
-              {memeUrl && <img src={memeUrl} alt="Random Meme" />}
-            </div>
-            <button onClick={generateRandomMeme} className="generate-button">
+          <div className="joke-wrapper">
+            {loading ? (
+              <PlaceholderPara />
+            ) : (
+              <div className="joke-container">
+                <p>{joke}</p>
+              </div>
+            )}
+            <button onClick={generateRandomJoke} className="generate-button">
               Generate
             </button>
           </div>

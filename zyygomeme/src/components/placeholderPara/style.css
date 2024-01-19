@@ -1,0 +1,11 @@
+.placeholder {
+  width: 80%;
+  height: 20px;
+  background-color: rgb(21, 21, 21);
+}
+
+.para-2 {
+  width: 70%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
